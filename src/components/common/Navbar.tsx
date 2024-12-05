@@ -8,8 +8,9 @@ export default function Navbar() {
     <div className="bg-white py-2 shadow-sm">
       <div className="sm:container mx-auto sm:px-0 px-2 flex justify-between items-center">
         <div>
-          <a href="https://signcast.ca/" target="_blank">
-            <img className="w-[90px]" src="https://149355274.v2.pressablecdn.com/wp-content/uploads/2018/05/signcast-email-logo.png" alt="Signcast Logo" />
+          <a className="flex items-center" href="https://signcast.ca/" target="_blank">
+            <img className="w-[90px] mr-3" src="https://149355274.v2.pressablecdn.com/wp-content/uploads/2018/05/signcast-email-logo.png" alt="Signcast Logo" />
+            <span className="text-gray-400 font-semibold mt-1 sm:block hidden">LED Install Planner</span>
           </a>
         </div>
         <div className="sm:text-sm text-normal">
