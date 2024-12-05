@@ -1,1 +1,1 @@
-export { default as Navbar } from './common/navbar';
+export { default as Navbar } from './common/Navbar.tsx';
