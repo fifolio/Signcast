@@ -29,7 +29,7 @@ export default function App() {
 
     // Determine the page to render
     useEffect(() => {
-        if (isUploaded && isUploadingLoading) {
+        if (!isUploaded && isUploadingLoading) {
             setCurrentPage('LoadingPage');
         } else if (isUploaded && !isUploadingLoading) {
             setCurrentPage('HomePage');
