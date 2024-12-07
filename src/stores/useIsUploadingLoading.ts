@@ -6,6 +6,6 @@ interface useIsUploadingLoading {
 }
 
 export const useIsUploadingLoading = create<useIsUploadingLoading>((set) => ({
-    isUploadingLoading: true,
+    isUploadingLoading: false,
     setIsUploadingLoading: (state) => set({ isUploadingLoading: state }) }
 ));

@@ -6,6 +6,6 @@ interface useIsUploaded {
 }
 
 export const useIsUploaded = create<useIsUploaded>((set) => ({
-    isUploaded: true,
+    isUploaded: false,
     setIsUploaded: (state) => set({ isUploaded: state }),
 }))
