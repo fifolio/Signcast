@@ -13,7 +13,7 @@ import { MdOutlineUploadFile } from "react-icons/md";
 export default function Navbar() {
 
   const { isUploaded } = useIsUploaded();
-  const {isUploadingLoading} = useIsUploadingLoading();
+  const { isUploadingLoading } = useIsUploadingLoading();
 
   return (
     <div className="bg-white py-2 shadow-sm fixed w-full">
