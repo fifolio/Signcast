@@ -1,28 +1,41 @@
+import { useEffect, useState } from "react";
+
 // UI
-import { Configuration, Navbar } from "../components";
-
-// STORES
-import { useDataFromfile } from "@/stores/useDataFromFile";
-
+import { Configuration, Description, Download, LayoutParameters, Navbar } from "../components";
+import { ScrollArea } from "@/components/ui/scroll-area"
 
 
 export default function HomePage() {
 
-  // Fetch the storred data from file
-  const { dataFromFile } = useDataFromfile();
+  // Dynamically track page height
+  const [pageHeight, setPageHeight] = useState<number>(document.documentElement.scrollHeight - 80);
 
-  console.log('My Data:', dataFromFile)
+  useEffect(() => {
+    const updatePageHeight = () => setPageHeight(document.documentElement.scrollHeight - 80);
+
+    // Update on initial render and window resize
+    updatePageHeight();
+    window.addEventListener("resize", updatePageHeight);
+
+    // Cleanup listener on unmount
+    return () => window.removeEventListener("resize", updatePageHeight);
+  }, []);
 
   return (
     <>
       <header>
         <Navbar />
       </header>
-      <main className="sm:container mx-auto sm:px-0 px-2 mt-5 lg:flex lg:space-x-4 space-y-4 lg:space-y-0">
+      <main style={{ maxHeight: `${pageHeight}px` }} className="sm:container mx-auto sm:px-0 px-2 mt-16 mb-3 lg:flex lg:space-x-4 space-y-4 lg:space-y-0">
         <div className="space-y-2">
-          <Configuration />
+          <ScrollArea style={{ maxHeight: `${pageHeight}px` }} className="sm:h-full h-[600px]">
+            <Configuration />
+            <LayoutParameters />
+            <Description />
+            <Download />
+          </ScrollArea>
         </div>
-        <div className="w-full bg-white shadow-sm rounded-md">
+        <div className="w-full bg-white shadow-sm rounded-md border-[1px] border-gray-200">
           <p>Preview</p>
         </div>
       </main>

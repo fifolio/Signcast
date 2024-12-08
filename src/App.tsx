@@ -8,6 +8,9 @@ import UploadPage from "./pages/UploadPage";
 import { useIsUploaded } from "./stores/useIsUploaded";
 import { useIsUploadingLoading } from "./stores/useIsUploadingLoading";
 
+// UI
+import { Toaster } from "@/components/ui/toaster"
+
 export default function App() {
     // Check if user uploaded a new file
     const { isUploaded } = useIsUploaded();
@@ -35,9 +38,16 @@ export default function App() {
             setCurrentPage('HomePage');
         } else if (!isUploaded && !isUploadingLoading) {
             setCurrentPage('UploadPage');
+        } else if (isUploaded && isUploadingLoading) {
+            setCurrentPage('LoadingPage');
         }
 
     }, [isUploadingLoading, isUploaded])
 
-    return page();
+    return (
+        <>
+            {page()}
+            <Toaster />
+        </>
+    )
 }
