@@ -11,14 +11,15 @@ export const Fabric = () => {
       // Initialize the Fabric.js canvas
       const canvas = new fabric.Canvas(canvasRef.current);
 
-      // Add a rectangle as an example
+      // Add a sample rectangle (for testing)
       const rect = new fabric.Rect({
-        left: 50,
-        top: 50,
-        fill: 'red',
-        width: 100,
+        left: 100,
+        top: 100,
+        fill: 'blue',
+        width: 200,
         height: 100,
       });
+      canvas.add(rect);
 
       canvas.add(rect);
 
@@ -32,9 +33,9 @@ export const Fabric = () => {
   return (
     <canvas
       ref={canvasRef}
-      width={800}
-      height={600}
-      style={{ border: '1px solid black' }}
+      width={900}
+      height={500}
+      className='border-[1px] border-gray-200 rounded-md'
     ></canvas>
   );
 };

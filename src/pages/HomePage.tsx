@@ -35,8 +35,8 @@ export default function HomePage() {
             <Download />
           </ScrollArea>
         </div>
-        <div className="w-full bg-white shadow-sm rounded-md border-[1px] border-gray-200">
-          <Fabric />
+        <div className="flex justify-center items-center w-full bg-white shadow-sm rounded-md border-[1px] border-gray-200">
+            <Fabric />
         </div>
       </main>
     </>
