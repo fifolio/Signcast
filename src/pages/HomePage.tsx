@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 // UI
-import { Configuration, Description, Download, LayoutParameters, Navbar } from "../components";
+import { Configuration, Description, Download, Fabric, LayoutParameters, Navbar } from "../components";
 import { ScrollArea } from "@/components/ui/scroll-area"
 
 
@@ -36,7 +36,7 @@ export default function HomePage() {
           </ScrollArea>
         </div>
         <div className="w-full bg-white shadow-sm rounded-md border-[1px] border-gray-200">
-          <p>Preview</p>
+          <Fabric />
         </div>
       </main>
     </>

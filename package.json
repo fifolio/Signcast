@@ -19,6 +19,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "date-fns": "^3.6.0",
+    "fabric": "file:fabric-6.5.3.tgz",
     "lucide-react": "^0.468.0",
     "papaparse": "^5.4.1",
     "react": "^18.3.1",
