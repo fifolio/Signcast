@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+
 // UI
 import {
     Select,
@@ -8,10 +10,14 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
+import { Label } from "../ui/label";
 
 // STORES
 import { useDataFromfile } from "@/stores/useDataFromFile";
-import { Label } from "../ui/label";
+import { useConfigurations } from "@/stores/useConfiguration";
+
+// TYPES
+import { ConfigurationsDataTypes } from "@/types/ConfigurationsDataTypes";
 
 export default function Configuration() {
 
@@ -23,13 +29,30 @@ export default function Configuration() {
         Data_from_Receptacle_Box
     } = useDataFromfile();
 
+    // Get the configurations store 
+    const { setConfigurations } = useConfigurations();
+
+    // Store temporary the configurations data 
+    const [configurationsData, setConfigurationsData] = useState<ConfigurationsDataTypes>({
+        screen_MFR: '',
+        media_Player_MFR: '',
+        mounts: '',
+        receptacle_Box: '',
+    });
+
+    // Update archive whenever configurationsData changes
+    useEffect(() => {
+        setConfigurations([configurationsData]);
+    }, [configurationsData, setConfigurationsData]);
+
+
     return (
         <div className="bg-white border-[1px] border-gray-200 shadow-sm p-3 mb-3 rounded-md w-[300px] h-min">
             <h5 className="font-semibold text-md mb-4">Configuration</h5>
 
             {/* SCREEN MODELS */}
             <div className="mb-3">
-                <Select>
+                <Select onValueChange={(value) => setConfigurationsData((prev) => ({ ...prev, screen_MFR: value }))}>
                     <Label className="text-gray-800 font-thin">Screen</Label>
                     <SelectTrigger className="w-full mt-1">
                         <SelectValue placeholder="Select a Screen" />
@@ -47,7 +70,7 @@ export default function Configuration() {
 
             {/* MEDIA PLAYERS */}
             <div className="mb-3">
-                <Select>
+                <Select onValueChange={(value) => setConfigurationsData((prev) => ({ ...prev, media_Player_MFR: value }))}>
                     <Label className="text-gray-800 font-thin">Media Player</Label>
                     <SelectTrigger className="w-full mt-1">
                         <SelectValue placeholder="Select a Media Player" />
@@ -65,7 +88,7 @@ export default function Configuration() {
 
             {/* MOUNTS */}
             <div className="mb-3">
-                <Select>
+                <Select onValueChange={(value) => setConfigurationsData((prev) => ({ ...prev, mounts: value }))}>
                     <Label className="text-gray-800 font-thin">Mounts</Label>
                     <SelectTrigger className="w-full mt-1">
                         <SelectValue placeholder="Select a Mount Model" />
@@ -83,7 +106,7 @@ export default function Configuration() {
 
             {/* RECEPTACLE BOX */}
             <div className="mb-3">
-                <Select>
+                <Select onValueChange={(value) => setConfigurationsData((prev) => ({ ...prev, receptacle_Box: value }))}>
                     <Label className="text-gray-800 font-thin">Receptacle Box</Label>
                     <SelectTrigger className="w-full mt-1">
                         <SelectValue placeholder="Select a Receptacle Box" />
