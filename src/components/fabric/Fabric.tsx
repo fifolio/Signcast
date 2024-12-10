@@ -1,5 +1,37 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
+
+// STORES
 import { useLayoutParameters } from '@/stores/useLayoutParameters';
+import { useDrawingToolStore } from '@/stores/useAddDrawingTools';
+
+// UI
+import { Button } from '../ui/button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+import { Input } from "@/components/ui/input"
+
+// ICONS
+import { MdOutlineDraw } from "react-icons/md";
+import { LuRectangleHorizontal } from "react-icons/lu";
+import { FaRegCircle } from "react-icons/fa";
+import { RxDividerHorizontal } from "react-icons/rx";
+import { PiLineVerticalBold } from "react-icons/pi";
+import { LuTextCursor } from "react-icons/lu";
+import { AiOutlineDelete } from "react-icons/ai";
+
 
 export const Fabric = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -7,6 +39,15 @@ export const Fabric = () => {
   const fabricCanvasRef = useRef<any>(null); // Store the Fabric.js canvas instance
   const { layoutParameters } = useLayoutParameters();
   const { orientation, placement, floorDistance, nicheDepthVar } = layoutParameters;
+
+  // Access the selected tool from the global store
+  const selectedTool = useDrawingToolStore((state) => state.selectedTool);
+
+  // Pass the selected drawing tool to the store
+  const setSelectedTool = useDrawingToolStore((state) => state.setSelectedTool);
+
+  const [addNewText, setAddNewText] = useState<string>('');
+
 
   // Initialize Fabric.js canvas once
   useEffect(() => {
@@ -27,11 +68,16 @@ export const Fabric = () => {
     }
   }, []); // Run only once when the component mounts
 
-  // Update layout based on parameters
+  // Update layout based on parameters and keep the drawings
   useEffect(() => {
     const canvas = fabricCanvasRef.current;
     if (canvas) {
-      canvas.clear(); // Clear the canvas for updates
+      // Remove old objects with specific tags
+      canvas.getObjects().forEach((obj: { customId: string; }) => {
+        if (obj.customId === 'screen' || obj.customId === 'label' || obj.customId === 'niche' || obj.customId === 'dimension') {
+          canvas.remove(obj);
+        }
+      });
 
       const width = orientation === 'horizontal' ? 300 : 150;
       const height = orientation === 'horizontal' ? 150 : 300;
@@ -40,36 +86,27 @@ export const Fabric = () => {
       const screen = new window.fabric.Rect({
         width,
         height,
-        fill: '#3498db',
+        fill: 'transparent',
         stroke: 'black',
         strokeWidth: 2,
         top: canvas.height / 2 - height / 2,
         left: canvas.width / 2 - width / 2,
       });
+      screen.customId = 'screen'; // Add custom ID
       canvas.add(screen);
 
       // Add dashed box for the power outlet
       const powerOutlet = new window.fabric.Rect({
         width: 50,
         height: 50,
-        stroke: 'red',
+        stroke: 'gray',
         strokeWidth: 2,
         fill: 'transparent',
         top: screen.top! + screen.height! + 20,
         left: canvas.width / 2 - 25,
       });
+      powerOutlet.customId = 'screen'; // Add custom ID
       canvas.add(powerOutlet);
-
-      // Display floor-to-screen-center distance
-      const label = new window.fabric.Text(
-        `Floor to Screen Center: ${floorDistance} cm`,
-        {
-          fontSize: 18,
-          left: 10,
-          top: 10,
-        }
-      );
-      canvas.add(label);
 
       // Handle niche installation
       if (placement === 'Niche') {
@@ -82,91 +119,181 @@ export const Fabric = () => {
           left: screen.left! - nicheDepthVar / 2,
           top: screen.top! - nicheDepthVar / 2,
         });
+        niche.customId = 'niche'; // Add custom ID
         canvas.add(niche);
       }
-
-      // Add Dimension Boxes (Small Boxes with Numbers)
-      const dimensionBoxWidth = new window.fabric.Rect({
-        width: 60,
-        height: 30,
-        fill: '#f39c12',
-        stroke: 'black',
-        strokeWidth: 1,
-        top: screen.top! + height / 2 - 15,
-        left: screen.left! + width / 2 + 20,
-      });
-      const dimensionBoxWidthText = new window.fabric.Text(
-        `${width}”`,
-        {
-          left: dimensionBoxWidth.left! + 10,
-          top: dimensionBoxWidth.top! + 7,
-          fontSize: 14,
-        }
-      );
-      canvas.add(dimensionBoxWidth, dimensionBoxWidthText);
-
-      const dimensionBoxHeight = new window.fabric.Rect({
-        width: 60,
-        height: 30,
-        fill: '#f39c12',
-        stroke: 'black',
-        strokeWidth: 1,
-        top: screen.top! + height / 2 + 40,
-        left: screen.left! - 20,
-      });
-      const dimensionBoxHeightText = new window.fabric.Text(
-        `${height}”`,
-        {
-          left: dimensionBoxHeight.left! + 10,
-          top: dimensionBoxHeight.top! + 7,
-          fontSize: 14,
-        }
-      );
-      canvas.add(dimensionBoxHeight, dimensionBoxHeightText);
-
-      // Add Text Labels (e.g., Floor Line, Centerline of Display)
-      const floorLineLabel = new window.fabric.Text('Floor Line', {
-        fontSize: 16,
-        left: 10,
-        top: canvas.height - 30,
-      });
-      const centerlineLabel = new window.fabric.Text('Centerline of Display', {
-        fontSize: 16,
-        left: canvas.width / 2 - 100,
-        top: screen.top! + height / 2,
-      });
-      canvas.add(floorLineLabel, centerlineLabel);
-
-      // Draw lines for connecting labels to their corresponding objects
-      const floorLineLine = new window.fabric.Line(
-        [0, canvas.height - 20, canvas.width, canvas.height - 20],
-        {
-          stroke: 'black',
-          strokeWidth: 1,
-          selectable: false,
-        }
-      );
-      canvas.add(floorLineLine);
-
-      const centerlineLine = new window.fabric.Line(
-        [canvas.width / 2, screen.top! + height / 2, canvas.width / 2, screen.top! + height / 2 + 50],
-        {
-          stroke: 'black',
-          strokeWidth: 1,
-          selectable: false,
-        }
-      );
-      canvas.add(centerlineLine);
 
       // Render updated canvas
       canvas.renderAll();
     }
-  }, [orientation, placement, floorDistance, nicheDepthVar]); // Dependencies for parameter changes
+  }, [orientation, placement, floorDistance, nicheDepthVar]);
+
+  // Handle adding new drawing tools
+  useEffect(() => {
+    const canvas = fabricCanvasRef.current;
+    if (canvas && selectedTool) {
+      switch (selectedTool) {
+        case 'text': {
+          const addText = new window.fabric.Text(addNewText, {
+            left: canvas.width / 2 - 50,
+            top: canvas.height / 2 - 25,
+            fontFamily: 'Arial',
+            fontSize: 15,
+            fill: 'black',
+            type: 'text',
+            editable: true, // Make text editable
+          });
+          addText.customId = `${new Date().getTime().toString()}`; // Add custom ID
+          canvas.add(addText);
+          break;
+        }
+        case 'rectangle': {
+          const rectangle = new window.fabric.Rect({
+            left: canvas.width / 2 - 50,
+            top: canvas.height / 2 - 50,
+            width: 100,
+            height: 100,
+            fill: 'transparent',
+            stroke: 'black',
+            strokeWidth: 2,
+          });
+          canvas.add(rectangle);
+          break;
+        }
+        case 'circle': {
+          const circle = new window.fabric.Circle({
+            left: canvas.width / 2 - 50,
+            top: canvas.height / 2 - 50,
+            radius: 50,
+            fill: 'transparent',
+            stroke: 'black',
+            strokeWidth: 2,
+          });
+          canvas.add(circle);
+          break;
+        }
+        case 'h-line': {
+          const hLine = new window.fabric.Line(
+            [canvas.width / 2 - 100, canvas.height / 2, canvas.width / 2 + 100, canvas.height / 2],
+            {
+              stroke: 'black',
+              strokeWidth: 2,
+            }
+          );
+          canvas.add(hLine);
+          break;
+        }
+        case 'v-line': {
+          const vLine = new window.fabric.Line(
+            [canvas.width / 2, canvas.height / 2 - 100, canvas.width / 2, canvas.height / 2 + 100],
+            {
+              stroke: 'black',
+              strokeWidth: 2,
+            }
+          );
+          canvas.add(vLine);
+          break;
+        }
+        default:
+          break;
+      }
+      canvas.renderAll(); // Render updated canvas
+    }
+  }, [selectedTool]); // Run every time the selected tool changes
+
+  // Function to delete the selected object
+  const deleteSelectedObject = () => {
+    const canvas = fabricCanvasRef.current;
+    if (canvas) {
+      const activeObject = canvas.getActiveObject();
+      if (activeObject) {
+        canvas.remove(activeObject); // Remove the selected object
+        canvas.discardActiveObject(); // Deselect the object
+        canvas.renderAll(); // Re-render the canvas
+      }
+    }
+  };
 
   return (
-    <canvas
-      ref={canvasRef}
-      className="border-[1px] border-gray-200 rounded-md"
-    ></canvas>
+    <div>
+      {/* ADD NEW TOOL && DELETE SELECTED TOOL btns */}
+      <div className="flex justify-between items-center rounded-md w-full mb-3 mt-10">
+
+        {/* ADD NEW TOOL */}
+        <div className="flex items-center space-x-3">
+          <DropdownMenu>
+            <DropdownMenuTrigger className="flex justify-between px-4 items-center min-w-[180px] border-[1px] border-gray-300 bg-white h-[40px] shadow-sm rounded-md text-sm font-semibold">
+              <span>
+                Add New Object
+              </span>
+              <MdOutlineDraw className="text-lg" />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuLabel>Select Drawing Tool</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem className="flex justify-between cursor-pointer" onClick={() => setSelectedTool('rectangle')}>
+                <span>
+                  Rectangle
+                </span>
+                <LuRectangleHorizontal />
+              </DropdownMenuItem>
+              <DropdownMenuItem className="flex justify-between cursor-pointer" onClick={() => setSelectedTool('circle')}>
+                <span>
+                  Circle
+                </span>
+                <FaRegCircle />
+              </DropdownMenuItem>
+              <DropdownMenuItem className="flex justify-between cursor-pointer" onClick={() => setSelectedTool('h-line')}>
+                <span>
+                  Horizontal Line
+                </span>
+                <RxDividerHorizontal />
+              </DropdownMenuItem>
+              <DropdownMenuItem className="flex justify-between cursor-pointer" onClick={() => setSelectedTool('v-line')}>
+                Vertical Line
+                <PiLineVerticalBold />
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button variant="outline" className='flex justify-between px-4 items-center min-w-[120px] border-[1px] border-gray-300 bg-white h-[40px] shadow-sm rounded-md text-sm font-semibold'>
+                <span>
+                  Add Text
+                </span>
+                <LuTextCursor />
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-md">
+              <DialogHeader>
+                <DialogTitle>Insert a new label</DialogTitle>
+              </DialogHeader>
+              <div className="flex items-center space-x-2">
+                <div className="grid flex-1 gap-2">
+                  <Input placeholder="Enter your text ..." onChange={(e) => setAddNewText(e.target.value)}/>
+                </div>
+                <Button type="submit" className="px-3" onClick={() => setSelectedTool('text')}>
+                Add
+                  <span className="sr-only">Copy</span>
+                </Button>
+              </div>
+            </DialogContent>
+          </Dialog>
+        </div>
+
+        {/* DELETE TOOL */}
+        <Button variant={'destructive'} onClick={deleteSelectedObject} className="flex justify-between items-center font-semibold">
+          <span>
+            Delete Selected Object
+          </span>
+          <AiOutlineDelete className='text-lg' />
+        </Button>
+      </div>
+      <canvas
+        ref={canvasRef}
+        className="border-[1px] border-gray-200 rounded-md"
+      ></canvas>
+    </div>
   );
 };

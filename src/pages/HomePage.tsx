@@ -30,10 +30,10 @@ export default function HomePage() {
     description];
 
   // Dynamically track page height
-  const [pageHeight, setPageHeight] = useState<number>(document.documentElement.scrollHeight - 80);
+  const [pageHeight, setPageHeight] = useState<number>(document.documentElement.scrollHeight - 30);
 
   useEffect(() => {
-    const updatePageHeight = () => setPageHeight(document.documentElement.scrollHeight - 80);
+    const updatePageHeight = () => setPageHeight(document.documentElement.scrollHeight - 30);
 
     // Update on initial render and window resize
     updatePageHeight();
