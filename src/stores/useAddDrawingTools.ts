@@ -1,8 +1,8 @@
-// src/stores/useDrawingToolStore.ts
 import { create } from 'zustand';
+import { useDrawingToolState_interface } from '@/interfaces/useDrawingToolState_interface';
 
-export const useDrawingToolStore = create((set) => ({
-    selectedTool: null,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    setSelectedTool: (tool: any) => set({ selectedTool: tool }),
+// Create the store with the defined state type
+export const useDrawingToolStore = create<useDrawingToolState_interface>((set) => ({
+  selectedTool: null,
+  setSelectedTool: (tool) => set({ selectedTool: tool }),
 }));
