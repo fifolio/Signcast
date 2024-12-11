@@ -30,10 +30,10 @@ export default function HomePage() {
     description];
 
   // Dynamically track page height
-  const [pageHeight, setPageHeight] = useState<number>(document.documentElement.scrollHeight - 30);
+  const [pageHeight, setPageHeight] = useState<number>(document.documentElement.scrollHeight);
 
   useEffect(() => {
-    const updatePageHeight = () => setPageHeight(document.documentElement.scrollHeight - 30);
+    const updatePageHeight = () => setPageHeight(document.documentElement.scrollHeight);
 
     // Update on initial render and window resize
     updatePageHeight();
@@ -53,16 +53,16 @@ export default function HomePage() {
       <header>
         <Navbar />
       </header>
-      <main style={{ maxHeight: `${pageHeight}px` }} className="sm:container mx-auto sm:px-0 px-2 mt-16 mb-3 lg:flex lg:space-x-4 space-y-4 lg:space-y-0">
+      <main className="sm:container mx-auto sm:px-0 px-2 mt-16 mb-3 lg:flex lg:space-x-4 space-y-4 lg:space-y-0">
         <div className="space-y-2">
-          <ScrollArea style={{ maxHeight: `${pageHeight}px` }} className="lg:h-full h-[600px]">
+          <ScrollArea className="h-[858px]">
             <Configuration />
             <LayoutParameters />
             <Description />
             <Download />
           </ScrollArea>
         </div>
-        <div className="flex justify-center items-center w-full bg-white shadow-sm rounded-md border-[1px] border-gray-200">
+        <div className=" w-full bg-white shadow-sm rounded-md border-[1px] border-gray-200">
           <Fabric />
         </div>
       </main>

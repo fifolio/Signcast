@@ -22,6 +22,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
+import { Niche, Notes, Screen } from '../details';
 
 // ICONS
 import { MdOutlineDraw } from "react-icons/md";
@@ -215,7 +216,15 @@ export const Fabric = () => {
   };
 
   return (
-    <div>
+    <div className="w-full px-3 py-5">
+
+      {/* DETAILS AREA */}
+      <div className="lg:flex block lg:justify-between lg:space-x-3 space-y-3 lg:space-y-0">
+        <Notes />
+        <Niche />
+        <Screen />
+      </div>
+
       {/* ADD NEW TOOL && DELETE SELECTED TOOL btns */}
       <div className="flex justify-between items-center rounded-md w-full mb-3 mt-10">
 
@@ -271,10 +280,10 @@ export const Fabric = () => {
               </DialogHeader>
               <div className="flex items-center space-x-2">
                 <div className="grid flex-1 gap-2">
-                  <Input placeholder="Enter your text ..." onChange={(e) => setAddNewText(e.target.value)}/>
+                  <Input placeholder="Enter your text ..." onChange={(e) => setAddNewText(e.target.value)} />
                 </div>
                 <Button type="submit" className="px-3" onClick={() => setSelectedTool('text')}>
-                Add
+                  Add
                   <span className="sr-only">Copy</span>
                 </Button>
               </div>
@@ -290,10 +299,13 @@ export const Fabric = () => {
           <AiOutlineDelete className='text-lg' />
         </Button>
       </div>
-      <canvas
-        ref={canvasRef}
-        className="border-[1px] border-gray-200 rounded-md"
-      ></canvas>
+
+      <div className="flex justify-center">
+        <canvas
+          ref={canvasRef}
+          className="border-[1px] border-gray-200 rounded-md"
+        ></canvas>
+      </div>
     </div>
   );
 };
