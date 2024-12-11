@@ -8,9 +8,7 @@ import { useNotes } from "@/stores/useNotes";
 export default function Notes() {
 
   // Update the Notes store
-  const { notes, setNotes } = useNotes();
-
-  console.log(notes)
+  const { setNotes } = useNotes();
 
   return (
     <div className="bg-white shadow-sm rounded-md border-[1px] border-gray-200 space-y-2 w-full p-2">
