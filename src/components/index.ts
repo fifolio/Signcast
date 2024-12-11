@@ -5,4 +5,6 @@ export { default as Description } from './controllers/Description.tsx';
 export { default as Download } from './controllers/Download.tsx';
 export { default as Upload } from './upload/Upload.tsx';
 export { Fabric } from './fabric/Fabric.tsx';
+export { default as PDF } from './pdf/PDF.tsx';
+
 
