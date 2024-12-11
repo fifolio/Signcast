@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 // UI
 import { Configuration, Description, Download, Fabric, LayoutParameters, Navbar } from "../components";
@@ -28,20 +28,6 @@ export default function HomePage() {
     configurations, 
     layoutParameters, 
     description];
-
-  // Dynamically track page height
-  const [pageHeight, setPageHeight] = useState<number>(document.documentElement.scrollHeight);
-
-  useEffect(() => {
-    const updatePageHeight = () => setPageHeight(document.documentElement.scrollHeight);
-
-    // Update on initial render and window resize
-    updatePageHeight();
-    window.addEventListener("resize", updatePageHeight);
-
-    // Cleanup listener on unmount
-    return () => window.removeEventListener("resize", updatePageHeight);
-  }, []);
 
   // Dynamically pass the new data to the Archive
   useEffect(() => {
