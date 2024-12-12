@@ -47,8 +47,8 @@ export default function LayoutParameters() {
               <SelectContent>
                 <SelectGroup>
                   <SelectLabel>Orientations</SelectLabel>
-                  <SelectItem value="horizontal">Horizontal</SelectItem>
-                  <SelectItem value="vertical">Vertical</SelectItem>
+                  <SelectItem value="Horizontal">Horizontal</SelectItem>
+                  <SelectItem value="Vertical">Vertical</SelectItem>
                 </SelectGroup>
               </SelectContent>
             </Select>

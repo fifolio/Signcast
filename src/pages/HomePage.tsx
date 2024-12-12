@@ -1,38 +1,9 @@
-import { useEffect } from "react";
-
 // UI
 import { Configuration, Description, Download, Fabric, LayoutParameters, Navbar } from "../components";
 import { ScrollArea } from "@/components/ui/scroll-area"
 
-// STORES
-import { useConfigurations } from "@/stores/useConfiguration";
-import { useLayoutParameters } from "@/stores/useLayoutParameters";
-import { useDescription } from "@/stores/useDescription";
-import { useArchive } from "@/stores/useArchive";
-import { useDataFromfile } from "@/stores/useDataFromFile";
 
 export default function HomePage() {
-
-  const { setArchive } = useArchive();
-  const {Data_from_Screen_MFR, Data_from_Media_Player_MFR, Data_from_Mounts, Data_from_Receptacle_Box
-} = useDataFromfile();
-  const { configurations } = useConfigurations();
-  const { layoutParameters } = useLayoutParameters();
-  const { description } = useDescription();
-
-  const newArchiveEntry = [
-    Data_from_Screen_MFR,
-    Data_from_Media_Player_MFR,
-    Data_from_Mounts,
-    Data_from_Receptacle_Box,
-    configurations, 
-    layoutParameters, 
-    description];
-
-  // Dynamically pass the new data to the Archive
-  useEffect(() => {
-    setArchive(newArchiveEntry as []);
-  }, [configurations, layoutParameters, description]);
 
   return (
     <>

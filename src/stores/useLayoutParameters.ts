@@ -3,7 +3,7 @@ import { useLayoutParameters_interface } from '@/interfaces/useLayoutParameters_
 
 export const useLayoutParameters = create<useLayoutParameters_interface>((set) => ({
   layoutParameters: {
-    orientation: 'horizontal',
+    orientation: 'Horizontal',
     placement: 'Flat Wall',
     floorDistance: 100,
     nicheDepthVar: 20,

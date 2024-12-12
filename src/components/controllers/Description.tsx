@@ -24,7 +24,7 @@ import { DescriptionDataTypes } from "@/types/DescriptionDataTypes";
 export default function Description() {
     const [date, setDate] = useState<Date | undefined>();
 
-    // Get the Archive
+    // Set the Description store
     const { setDescription } = useDescription();
 
     // Store temporary description data
@@ -50,7 +50,7 @@ export default function Description() {
         }));
     };
 
-    // Update archive whenever descriptionData changes
+    // Update whenever descriptionData changes
     useEffect(() => {
         setDescription([descriptionData]);
     }, [descriptionData]);
@@ -65,7 +65,8 @@ export default function Description() {
                     <h6>Title</h6>
                     <div className="w-full text-black font-normal">
                         <Input
-                            placeholder="Enter a title.."
+                            className="capitalize"
+                            placeholder="Enter a title"
                             type="text"
                             onChange={handleInputChange("title")}
                         />
@@ -77,7 +78,8 @@ export default function Description() {
                     <h6>Drawer</h6>
                     <div className="w-full text-black font-normal">
                         <Input
-                            placeholder="Provide a drawer.."
+                            className="capitalize"
+                            placeholder="Provide a drawer"
                             type="text"
                             onChange={handleInputChange("drawer")}
                         />
@@ -89,7 +91,8 @@ export default function Description() {
                     <h6>Department</h6>
                     <div className="w-full text-black font-normal">
                         <Input
-                            placeholder="Specify Department.."
+                            className="capitalize"
+                            placeholder="Specify Department"
                             type="text"
                             onChange={handleInputChange("department")}
                         />
@@ -101,8 +104,8 @@ export default function Description() {
                     <h6>Screen Size</h6>
                     <div className="w-full text-black font-normal">
                         <Input
-                            placeholder="Specify Screen Size.."
-                            type="text"
+                            placeholder="Screen Size in Inches"
+                            type="number"
                             onChange={handleInputChange("screen_size")}
                         />
                     </div>

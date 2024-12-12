@@ -14,15 +14,15 @@ export default function Screen() {
       <h6 className="font-semibold">Screen Dimensions</h6>
       <div className="flex-col">
         <div className="flex items-center justify-between space-y-2 w-full text-sm">
-          <span className="font-normal w-1/2 mt-1">Height</span>
+          <span className="font-normal w-1/2 mt-1">Height <span className="text-[13px] italic text-gray-500">(inches)</span></span>
           <Input type="number" placeholder='28' className="w-1/2" onChange={(e) => setScreen('height', Number(e.target.value))}/>
         </div>
         <div className="flex items-center justify-between space-y-2 w-full text-sm">
-          <span className="font-normal w-1/2 mt-1">Width</span>
+          <span className="font-normal w-1/2 mt-1">Width <span className="text-[13px] italic text-gray-500">(inches)</span></span>
           <Input type="number" placeholder="48.50" className="w-1/2" onChange={(e) => setScreen('width', Number(e.target.value))}/>
         </div>
         <div className="flex items-center justify-between space-y-2 w-full text-sm">
-          <span className="font-normal w-1/2 mt-1">Floor Line</span>
+          <span className="font-normal w-1/2 mt-1">Floor Line <span className="text-[13px] italic text-gray-500">(inches)</span></span>
           <Input type="number" placeholder="50" className="w-1/2" onChange={(e) => setScreen('floor line', Number(e.target.value))}/>
         </div>
       </div>

@@ -40,7 +40,7 @@ export default function Configuration() {
         receptacle_Box: '',
     });
 
-    // Update archive whenever configurationsData changes
+    // Update whenever configurationsData changes
     useEffect(() => {
         setConfigurations([configurationsData]);
     }, [configurationsData, setConfigurationsData]);

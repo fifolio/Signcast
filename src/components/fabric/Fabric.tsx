@@ -80,8 +80,8 @@ export const Fabric = () => {
         }
       });
 
-      const width = orientation === 'horizontal' ? 300 : 150;
-      const height = orientation === 'horizontal' ? 150 : 300;
+      const width = orientation === 'Horizontal' ? 300 : 150;
+      const height = orientation === 'Horizontal' ? 150 : 300;
 
       // Draw the LED screen
       const screen = new window.fabric.Rect({
