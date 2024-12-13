@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-// UI
+// UI Components 🖥️
 import {
     Select,
     SelectContent,
@@ -12,27 +12,27 @@ import {
 } from "@/components/ui/select";
 import { Label } from "../ui/label";
 
-// STORES
+// STORES 📂
 import { useDataFromfile } from "@/stores/useDataFromFile";
 import { useConfigurations } from "@/stores/useConfiguration";
 
-// TYPES
+// TYPES 🧠
 import { ConfigurationsDataTypes } from "@/types/ConfigurationsDataTypes";
 
 export default function Configuration() {
 
-    // Fetch the data stored to for iteration 
+    // Fetch data for iteration 🔄
     const {
-        Data_from_Screen_MFR,
-        Data_from_Media_Player_MFR,
-        Data_from_Mounts,
-        Data_from_Receptacle_Box
+        Data_from_Screen_MFR,      // Screen data
+        Data_from_Media_Player_MFR, // Media Player data
+        Data_from_Mounts,          // Mounts data
+        Data_from_Receptacle_Box   // Receptacle Box data
     } = useDataFromfile();
 
-    // Get the configurations store 
+    // Get the configurations store 📊
     const { setConfigurations } = useConfigurations();
 
-    // Store temporary the configurations data 
+    // Temporarily store configurations data 💾
     const [configurationsData, setConfigurationsData] = useState<ConfigurationsDataTypes>({
         screen_MFR: '',
         media_Player_MFR: '',
@@ -40,9 +40,9 @@ export default function Configuration() {
         receptacle_Box: '',
     });
 
-    // Update whenever configurationsData changes
+    // Update configurations whenever configurationsData changes 📝
     useEffect(() => {
-        setConfigurations([configurationsData]);
+        setConfigurations([configurationsData]); // Update the global configurations state
     }, [configurationsData, setConfigurationsData]);
 
 
@@ -50,7 +50,7 @@ export default function Configuration() {
         <div className="bg-white border-[1px] border-gray-200 shadow-sm p-3 mb-3 rounded-md w-[300px] h-min">
             <h5 className="font-semibold text-md mb-4">Configuration</h5>
 
-            {/* SCREEN MODELS */}
+            {/* SCREEN MODELS 🖥️ */}
             <div className="mb-3">
                 <Select onValueChange={(value) => setConfigurationsData((prev) => ({ ...prev, screen_MFR: value }))}>
                     <Label className="text-gray-800 font-thin">Screen</Label>
@@ -60,6 +60,7 @@ export default function Configuration() {
                     <SelectContent>
                         <SelectGroup>
                             <SelectLabel>Screen Models</SelectLabel>
+                            {/* Mapping over the Screen data 🔄 */}
                             {Data_from_Screen_MFR.map((screen, i) => (
                                 <SelectItem key={i} value={`${screen['Screen MFR']}`}>{screen['Screen MFR']}</SelectItem>
                             ))}
@@ -68,7 +69,7 @@ export default function Configuration() {
                 </Select>
             </div>
 
-            {/* MEDIA PLAYERS */}
+            {/* MEDIA PLAYERS 🎮 */}
             <div className="mb-3">
                 <Select onValueChange={(value) => setConfigurationsData((prev) => ({ ...prev, media_Player_MFR: value }))}>
                     <Label className="text-gray-800 font-thin">Media Player</Label>
@@ -78,6 +79,7 @@ export default function Configuration() {
                     <SelectContent>
                         <SelectGroup>
                             <SelectLabel>Media Player</SelectLabel>
+                            {/* Mapping over Media Player data 🎵 */}
                             {Data_from_Media_Player_MFR.map((mediaPlayer, i) => (
                                 <SelectItem key={i} value={`${mediaPlayer['MFG. PART']}`}>{mediaPlayer['MFG. PART']}</SelectItem>
                             ))}
@@ -86,7 +88,7 @@ export default function Configuration() {
                 </Select>
             </div>
 
-            {/* MOUNTS */}
+            {/* MOUNTS 🏔️ */}
             <div className="mb-3">
                 <Select onValueChange={(value) => setConfigurationsData((prev) => ({ ...prev, mounts: value }))}>
                     <Label className="text-gray-800 font-thin">Mounts</Label>
@@ -96,6 +98,7 @@ export default function Configuration() {
                     <SelectContent>
                         <SelectGroup>
                             <SelectLabel>Mounts</SelectLabel>
+                            {/* Mapping over Mounts data 🏗️ */}
                             {Data_from_Mounts.map((mount, i) => (
                                 <SelectItem key={i} value={`${mount['MFG. PART']}`}>{mount['MFG. PART']}</SelectItem>
                             ))}
@@ -104,7 +107,7 @@ export default function Configuration() {
                 </Select>
             </div>
 
-            {/* RECEPTACLE BOX */}
+            {/* RECEPTACLE BOX 🔌 */}
             <div className="mb-3">
                 <Select onValueChange={(value) => setConfigurationsData((prev) => ({ ...prev, receptacle_Box: value }))}>
                     <Label className="text-gray-800 font-thin">Receptacle Box</Label>
@@ -114,6 +117,7 @@ export default function Configuration() {
                     <SelectContent>
                         <SelectGroup>
                             <SelectLabel>Receptacle Box's</SelectLabel>
+                            {/* Mapping over Receptacle Box data 🔋 */}
                             {Data_from_Receptacle_Box.map((receptacle_box, i) => (
                                 <SelectItem key={i} value={`${receptacle_box['MFG. PART']}`}>{receptacle_box['MFG. PART']}</SelectItem>
                             ))}

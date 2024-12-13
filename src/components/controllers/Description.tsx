@@ -24,10 +24,10 @@ import { DescriptionDataTypes } from "@/types/DescriptionDataTypes";
 export default function Description() {
     const [date, setDate] = useState<Date | undefined>();
 
-    // Set the Description store
+    // Setting the Description store 🛠️
     const { setDescription } = useDescription();
 
-    // Store temporary description data
+    // Temporary state to hold description data 💾
     const [descriptionData, setDescriptionData] = useState<DescriptionDataTypes>({
         title: "",
         drawer: "",
@@ -36,13 +36,14 @@ export default function Description() {
         date: "",
     });
 
-    // Input Handlers
+    // Handling input changes for fields 📝
     const handleInputChange =
         (key: keyof DescriptionDataTypes) => (event: ChangeEvent<HTMLInputElement>) => {
             const value = event.target.value;
             setDescriptionData((prev) => ({ ...prev, [key]: value }));
         };
 
+    // Handling date change 🗓️
     const handleDateChange = (selectedDate: Date | undefined) => {
         setDate(selectedDate);
         setDescriptionData((prev) => ({
@@ -50,7 +51,7 @@ export default function Description() {
         }));
     };
 
-    // Update whenever descriptionData changes
+    // Updating description in the store whenever descriptionData changes 🔄
     useEffect(() => {
         setDescription([descriptionData]);
     }, [descriptionData]);
@@ -60,7 +61,7 @@ export default function Description() {
             <h5 className="font-semibold text-md mb-4">Description</h5>
 
             <main className="w-full text-sm text-gray-800 space-y-4">
-                {/* Title */}
+                {/* Title Input Section 🏷️ */}
                 <div className="space-y-2">
                     <h6>Title</h6>
                     <div className="w-full text-black font-normal">
@@ -73,7 +74,7 @@ export default function Description() {
                     </div>
                 </div>
 
-                {/* Drawer */}
+                {/* Drawer Input Section 📦 */}
                 <div className="space-y-2">
                     <h6>Drawer</h6>
                     <div className="w-full text-black font-normal">
@@ -86,7 +87,7 @@ export default function Description() {
                     </div>
                 </div>
 
-                {/* Department */}
+                {/* Department Input Section 🏢 */}
                 <div className="space-y-2">
                     <h6>Department</h6>
                     <div className="w-full text-black font-normal">
@@ -99,7 +100,7 @@ export default function Description() {
                     </div>
                 </div>
 
-                {/* Screen Size */}
+                {/* Screen Size Input Section 📏 */}
                 <div className="space-y-2">
                     <h6>Screen Size</h6>
                     <div className="w-full text-black font-normal">
@@ -111,7 +112,7 @@ export default function Description() {
                     </div>
                 </div>
 
-                {/* Date */}
+                {/* Date Selection Section 📅 */}
                 <div className="space-y-2">
                     <h6>Date</h6>
                     <div className="w-full text-black font-normal">

@@ -143,6 +143,7 @@ const styles = StyleSheet.create({
         fontSize: 10,
         marginBottom: 3,
         color: 'black',
+        textTransform: 'capitalize',
     },
     notesSection: {
         width: '100%',
