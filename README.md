@@ -3,6 +3,8 @@
 
 Welcome to the **SignCast** repository! This project aims to create a **PDF drawing tool** that helps installation teams design the installation of LED screens. The tool provides a user-friendly interface for configuring and downloading the installation diagram in PDF format.
 
+🔴 <strong>View Live: </strong><a href="https://signcast.netlify.app/" target="_blank">Signcast.netlify.app</a>
+
 ## 📋 Project Overview
 
 SignCast is a React-based application designed to simplify the installation process of LED screens by offering a digital tool that allows users to:
