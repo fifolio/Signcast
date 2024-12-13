@@ -17,6 +17,7 @@ import {
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -32,6 +33,8 @@ import { RxDividerHorizontal } from "react-icons/rx";
 import { PiLineVerticalBold } from "react-icons/pi";
 import { LuTextCursor } from "react-icons/lu";
 import { AiOutlineDelete } from "react-icons/ai";
+import { useCanvasDataURL } from '@/interfaces/useCanvasDataURL';
+import { useGenerateDiagram } from '@/stores/useGenerateDiagram';
 
 
 export const Fabric = () => {
@@ -48,6 +51,13 @@ export const Fabric = () => {
   const setSelectedTool = useDrawingToolStore((state) => state.setSelectedTool);
 
   const [addNewText, setAddNewText] = useState<string>('');
+
+
+  // Update the diagram URL store
+  const { setCanvasDataURL } = useCanvasDataURL();
+
+  // Check on generating diagram state
+  const { generateDiagram, setGenerateDiagram } = useGenerateDiagram();
 
 
   // Initialize Fabric.js canvas once
@@ -67,6 +77,7 @@ export const Fabric = () => {
         canvas.dispose();
       };
     }
+
   }, []); // Run only once when the component mounts
 
   // Update layout based on parameters and keep the drawings
@@ -127,6 +138,11 @@ export const Fabric = () => {
       // Render updated canvas
       canvas.renderAll();
     }
+
+    canvas.renderAll(); // Ensure the canvas renders after adding the object
+    const dataURL = canvas.toDataURL();
+    setCanvasDataURL(dataURL);
+
   }, [orientation, placement, floorDistance, nicheDepthVar]);
 
   // Handle adding new drawing tools
@@ -139,7 +155,7 @@ export const Fabric = () => {
             left: canvas.width / 2 - 50,
             top: canvas.height / 2 - 25,
             fontFamily: 'Arial',
-            fontSize: 15,
+            fontSize: 16,
             fill: 'black',
             type: 'text',
             editable: true, // Make text editable
@@ -200,7 +216,13 @@ export const Fabric = () => {
       }
       canvas.renderAll(); // Render updated canvas
     }
+
+    canvas.renderAll(); // Ensure the canvas renders after adding the object
+    const dataURL = canvas.toDataURL();
+    setCanvasDataURL(dataURL);
+
   }, [selectedTool]); // Run every time the selected tool changes
+
 
   // Function to delete the selected object
   const deleteSelectedObject = () => {
@@ -215,6 +237,37 @@ export const Fabric = () => {
     }
   };
 
+
+  useEffect(() => {
+    const canvas = fabricCanvasRef.current;
+    let interval: NodeJS.Timeout;
+    if (generateDiagram === true) {
+      interval = setInterval(() => {
+        canvas.renderAll(); // Ensure the canvas renders after adding the object
+        const dataURL = canvas.toDataURL();
+        setCanvasDataURL(dataURL);
+      }, 10)
+    } else if (generateDiagram === false) {
+      canvas.renderAll(); // Ensure the canvas renders after adding the object
+      const dataURL = canvas.toDataURL();
+      setCanvasDataURL(dataURL);
+    }
+
+    // Cleanup the interval when `generateDiagram` changes or on component unmount
+    return () => {
+      if (interval) {
+        clearInterval(interval);
+      }
+    };
+  }, [generateDiagram]);
+
+
+     // handle diagram dynamic generating
+     function handleDiagramGenerating(state: boolean) {
+      setGenerateDiagram(state); // Turn off/on generating diagram flag
+  }
+
+
   return (
     <div className="w-full px-3 py-5">
 
@@ -226,7 +279,7 @@ export const Fabric = () => {
       </div>
 
       {/* ADD NEW TOOL && DELETE SELECTED TOOL btns */}
-      <div className="flex justify-between items-center rounded-md w-full mb-3 mt-10">
+      <div onMouseEnter={() => handleDiagramGenerating(true)} onMouseLeave={() => handleDiagramGenerating(false)} className="flex justify-between items-center rounded-md w-full mb-3 mt-10">
 
         {/* ADD NEW TOOL */}
         <div className="flex items-center space-x-3">
@@ -267,28 +320,44 @@ export const Fabric = () => {
 
           <Dialog>
             <DialogTrigger asChild>
-              <Button variant="outline" className='flex justify-between px-4 items-center min-w-[120px] border-[1px] border-gray-300 bg-white h-[40px] shadow-sm rounded-md text-sm font-semibold'>
-                <span>
-                  Add Text
-                </span>
+              <Button
+                variant="outline"
+                className="flex justify-between px-4 items-center min-w-[120px] border-[1px] border-gray-300 bg-white h-[40px] shadow-sm rounded-md text-sm font-semibold"
+              >
+                <span>Add Text</span>
                 <LuTextCursor />
               </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-md">
+            <DialogContent
+              className="sm:max-w-md"
+              aria-describedby="dialog-description"
+            >
               <DialogHeader>
                 <DialogTitle>Insert a new label</DialogTitle>
+                <DialogDescription id="dialog-description">
+                  Enter the text below and click "Add" to insert it.
+                </DialogDescription>
               </DialogHeader>
               <div className="flex items-center space-x-2">
                 <div className="grid flex-1 gap-2">
-                  <Input placeholder="Enter your text ..." onChange={(e) => setAddNewText(e.target.value)} />
+                  <Input
+                    placeholder="Enter your text ..."
+                    onChange={(e) => setAddNewText(e.target.value)}
+                  />
                 </div>
-                <Button type="submit" className="px-3" onClick={() => setSelectedTool('text')}>
+                <Button
+                  type="submit"
+                  className="px-3"
+                  onClick={() => setSelectedTool("text")}
+                >
                   Add
                   <span className="sr-only">Copy</span>
                 </Button>
               </div>
             </DialogContent>
           </Dialog>
+
+
         </div>
 
         {/* DELETE TOOL */}

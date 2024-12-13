@@ -30,6 +30,9 @@ export interface CollectedData_interface {
     screen_height: number | string,
     screen_weight: string,
 
+    // From Diagram
+    diagramURL: string,
+
     // From Notes
     notes: string,
 }

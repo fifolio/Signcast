@@ -16,12 +16,13 @@ import { useNiche } from "@/stores/useNiche";
 import { useScreen } from "@/stores/useScreen";
 import { useNotes } from "@/stores/useNotes";
 import { useDataFromfile } from "@/stores/useDataFromFile";
+import { useCanvasDataURL } from "@/interfaces/useCanvasDataURL";
 
 
 export default function Download() {
 
     // Update the disabled btn state
-    const [isLoading, setIsLoading] = useState(false)
+    const [isDownloading, setIsDownloading] = useState(false)
 
     // Collect Data from Stores
     const { Data_from_Screen_MFR, Data_from_Media_Player_MFR } = useDataFromfile();
@@ -31,6 +32,7 @@ export default function Download() {
     const { niche } = useNiche();
     const { screen } = useScreen();
     const { notes } = useNotes();
+    const { canvasDataURL } = useCanvasDataURL();
 
     // Extra details
     const addOn_Configurations = Data_from_Screen_MFR?.filter(item => item["Screen MFR"] === configurations[0]?.screen_MFR);
@@ -70,31 +72,34 @@ export default function Download() {
         screen_weight: addOn_Configurations?.[0]?.["Weight (LBS)"] || '',
 
         // From Notes
-        notes: notes
+        notes: notes,
+
+        // From Canvas
+        diagramURL: `${canvasDataURL}`,
     }
 
 
-
-    // handle Download btn
-    function handleDownload() {
-        setIsLoading(true)
+    // handle PDF file downloading state
+    function handleDownloadPDFDocument() {
+        setIsDownloading(true)
         setTimeout(() => {
-            setIsLoading(false)
-        }, 5000);
+            setIsDownloading(false)
+        }, 3000)
     }
+
 
     return (
         <div className="bg-white border-[1px] border-gray-200 shadow-sm p-3 rounded-md w-[300px] h-min">
 
-            <Button disabled={isLoading} className={`${isLoading ? 'flex' : 'hidden'} justify-center w-full font-semibold`}>
+            <Button disabled={isDownloading} className={`${isDownloading ? 'flex' : 'hidden'} justify-center w-full font-semibold`}>
                 <img src="images/loading.gif" alt="downloading..." className="w-9" />
             </Button>
 
-            <PDFDownloadLink className={`${isLoading ? 'hidden' : 'block'}`}
+            <PDFDownloadLink onClick={() => handleDownloadPDFDocument()} className={`${isDownloading ? 'hidden' : 'block'}`}
                 document={<PDF data={collectedData} />}
                 fileName={description[0]?.title ? `${description[0].title}.pdf` : `SignCast Media Planner.pdf`}
             >
-                <Button onClick={() => handleDownload()} className="flex justify-between w-full font-semibold">
+                <Button className="flex justify-between w-full font-semibold">
                     <span>Download as PDF</span>
                     <span><FiDownload /></span>
                 </Button>
