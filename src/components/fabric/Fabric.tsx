@@ -166,8 +166,8 @@ export const Fabric = () => {
         // ✍️ Adding a text tool
         case 'text': {
           const addText = new window.fabric.Text(addNewText, {
-            left: canvas.width / 2 - 50,
-            top: canvas.height / 2 - 25,
+            left: 10,
+            top: 10,
             fontFamily: 'Arial',
             fontSize: 16,
             fill: 'black',
@@ -182,8 +182,8 @@ export const Fabric = () => {
         // ➖ Adding a rectangle tool
         case 'rectangle': {
           const rectangle = new window.fabric.Rect({
-            left: canvas.width / 2 - 50,
-            top: canvas.height / 2 - 50,
+            left: 10,
+            top: 10,
             width: 100,
             height: 100,
             fill: 'transparent',
@@ -197,8 +197,8 @@ export const Fabric = () => {
         // 🔵 Adding a circle tool
         case 'circle': {
           const circle = new window.fabric.Circle({
-            left: canvas.width / 2 - 50,
-            top: canvas.height / 2 - 50,
+            left: 10,
+            top: 10,
             radius: 50,
             fill: 'transparent',
             stroke: 'black',
@@ -213,6 +213,8 @@ export const Fabric = () => {
           const hLine = new window.fabric.Line(
             [canvas.width / 2 - 100, canvas.height / 2, canvas.width / 2 + 100, canvas.height / 2],
             {
+              left: 10,
+              top: 20,
               stroke: 'black',
               strokeWidth: 2,
             }
@@ -226,6 +228,8 @@ export const Fabric = () => {
           const vLine = new window.fabric.Line(
             [canvas.width / 2, canvas.height / 2 - 100, canvas.width / 2, canvas.height / 2 + 100],
             {
+              left: 10,
+              top: 20,
               stroke: 'black',
               strokeWidth: 2,
             }
@@ -315,7 +319,7 @@ export const Fabric = () => {
 
   return (
     <div className="w-full px-3 py-5">
-  
+
       {/* DETAILS AREA 📝 */}
       {/* This section contains the different details and elements that can be displayed side by side */}
       <div className="lg:flex block lg:justify-between lg:space-x-3 space-y-3 lg:space-y-0">
@@ -323,15 +327,15 @@ export const Fabric = () => {
         <Niche />
         <Screen />
       </div>
-  
+
       {/* ADD NEW TOOL && DELETE SELECTED TOOL btns ➕🗑️ */}
       {/* The section contains buttons for adding new tools and deleting the selected tool */}
-      <div 
-        onMouseEnter={() => handleDiagramGenerating(true)} 
-        onMouseLeave={() => handleDiagramGenerating(false)} 
+      <div
+        onMouseEnter={() => handleDiagramGenerating(true)}
+        onMouseLeave={() => handleDiagramGenerating(false)}
         className="flex justify-between items-center rounded-md w-full mb-3 mt-10"
       >
-  
+
         {/* ADD NEW TOOL ➕ */}
         {/* This button will open a dropdown for selecting a new drawing tool */}
         <div className="flex items-center space-x-3">
@@ -345,7 +349,7 @@ export const Fabric = () => {
             <DropdownMenuContent>
               <DropdownMenuLabel>Select Drawing Tool</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              
+
               {/* Rectangle Tool ⬛ */}
               {/* Selects a rectangle as the drawing tool */}
               <DropdownMenuItem className="flex justify-between cursor-pointer" onClick={() => setSelectedTool('rectangle')}>
@@ -354,7 +358,7 @@ export const Fabric = () => {
                 </span>
                 <LuRectangleHorizontal />
               </DropdownMenuItem>
-  
+
               {/* Circle Tool 🔵 */}
               {/* Selects a circle as the drawing tool */}
               <DropdownMenuItem className="flex justify-between cursor-pointer" onClick={() => setSelectedTool('circle')}>
@@ -363,7 +367,7 @@ export const Fabric = () => {
                 </span>
                 <FaRegCircle />
               </DropdownMenuItem>
-  
+
               {/* Horizontal Line Tool ➖ */}
               {/* Selects a horizontal line as the drawing tool */}
               <DropdownMenuItem className="flex justify-between cursor-pointer" onClick={() => setSelectedTool('h-line')}>
@@ -372,7 +376,7 @@ export const Fabric = () => {
                 </span>
                 <RxDividerHorizontal />
               </DropdownMenuItem>
-  
+
               {/* Vertical Line Tool ➗ */}
               {/* Selects a vertical line as the drawing tool */}
               <DropdownMenuItem className="flex justify-between cursor-pointer" onClick={() => setSelectedTool('v-line')}>
@@ -381,7 +385,7 @@ export const Fabric = () => {
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-  
+
           {/* ADD TEXT ✍️ */}
           {/* Button for adding new text to the drawing area */}
           <Dialog>
@@ -422,9 +426,9 @@ export const Fabric = () => {
               </div>
             </DialogContent>
           </Dialog>
-  
+
         </div>
-  
+
         {/* DELETE TOOL 🗑️ */}
         {/* Button for deleting the selected drawing tool */}
         <Button variant={'destructive'} onClick={deleteSelectedObject} className="flex justify-between items-center font-semibold">
@@ -434,7 +438,7 @@ export const Fabric = () => {
           <AiOutlineDelete className='text-lg' />
         </Button>
       </div>
-  
+
       {/* CANVAS AREA 🖼️ */}
       {/* This section contains the canvas where the user can draw the selected objects */}
       <div className="flex justify-center">
@@ -445,5 +449,5 @@ export const Fabric = () => {
       </div>
     </div>
   );
-  
+
 };
